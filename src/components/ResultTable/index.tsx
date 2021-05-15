@@ -30,6 +30,7 @@ const ResultTable: React.FC = () => {
           <TableRow>
             <TableCell>Questions</TableCell>
             <TableCell>Correct</TableCell>
+            <TableCell>Link</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
