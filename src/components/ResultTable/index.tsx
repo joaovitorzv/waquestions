@@ -24,7 +24,7 @@ const rows = [
 const ResultTable: React.FC = () => {
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={0} variant='outlined'>
       <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
