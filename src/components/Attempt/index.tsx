@@ -36,7 +36,7 @@ function renderQuestionResult(question: string, correctAnswer: string, wrongAnsw
 
   return (
     <Box className={classes.questionResult}>
-      <Typography variant='body1'>{question}</Typography>
+      <Typography variant='body1'>1 - {question}</Typography>
       <Chip icon={<Check />} label={correctAnswer} color='primary' />
       {wrongAnswer && (
         <Chip icon={<Clear />} label={wrongAnswer} color='secondary' />
