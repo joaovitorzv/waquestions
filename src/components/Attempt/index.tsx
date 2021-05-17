@@ -43,16 +43,6 @@ const Attempt: React.FC<Props> = (props) => {
   const dateMonth = new Date(props.attempt.date).getMonth()
   const dateYear = new Date(props.attempt.date).getFullYear()
 
-  const correctQuestions = props.attempt.questionary.answers.filter((answerObj, idx) => {
-    return answerObj.answer.toLowerCase()
-      .includes(props.attempt.questionary.questions[idx].correct_answer.toLowerCase())
-  })
-
-  const incorrectQuestions = props.attempt.questionary.answers.filter((answerObj, idx) => {
-    return !answerObj.answer.toLowerCase()
-      .includes(props.attempt.questionary.questions[idx].correct_answer.toLowerCase())
-  })
-
   return (
     <div id={props.attempt.id}>
       <Paper elevation={0} variant='outlined' className={classes.root}>
@@ -67,8 +57,8 @@ const Attempt: React.FC<Props> = (props) => {
               : `${props.attempt.questionary.quantity} questions`}
             variant='outlined'
           />
-          <Chip size='small' label={`${correctQuestions.length} correct`} color='primary' variant='outlined' icon={<Check />} />
-          <Chip size='small' label={`${incorrectQuestions.length} incorrect`} color='secondary' variant='outlined' icon={<Clear />} />
+          <Chip size='small' label={`${props.attempt.questions_correct} correct`} color='primary' variant='outlined' icon={<Check />} />
+          <Chip size='small' label={`${props.attempt.questions_incorrect} incorrect`} color='secondary' variant='outlined' icon={<Clear />} />
         </Box>
         <Divider />
         {props.attempt.questionary.questions.map((questionObj, idx) => (
