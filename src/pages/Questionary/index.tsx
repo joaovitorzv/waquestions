@@ -76,6 +76,7 @@ const Questionary: React.FC = () => {
       question_id: questionary.questions[questionary.question_pointer].id,
       answer: answer
     })
+    setAnswer(null)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -97,7 +98,7 @@ const Questionary: React.FC = () => {
             Questionary
           </Typography>
           <Chip
-            label={`Question ${questionary.question_pointer} of ${questionary.quantity}`}
+            label={`Question ${questionary.question_pointer + 1} of ${questionary.quantity}`}
             variant='outlined'
             size='small'
             disabled

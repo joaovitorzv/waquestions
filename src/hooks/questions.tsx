@@ -21,18 +21,18 @@ interface Questionary {
 
 interface Attempt {
   id: string;
-  date: string;
+  date: Date;
   questionary: Questionary;
 }
 
 interface QuestionsState {
   questionary: Questionary;
-  attempts: Attempt[] | null;
+  attempts: Attempt[];
 }
 
 interface QuestionsContextData {
   questionary: Questionary;
-  attempts: Attempt[] | null;
+  attempts: Attempt[];
   dispatch: React.Dispatch<QuestionsReducerActions>;
 }
 
@@ -56,7 +56,7 @@ const initialState: QuestionsState = {
     question_pointer: 0,
     answers: []
   },
-  attempts: null
+  attempts: []
 }
 
 export const QuestionsProvider: React.FC = ({ children }) => {
@@ -96,6 +96,27 @@ export const QuestionsProvider: React.FC = ({ children }) => {
         }
 
       case QuestionsReducerType.NEXT_QUESTION:
+        if (state.questionary.question_pointer === state.questionary.quantity! - 1) {
+          return {
+            questionary: initialState.questionary,
+            attempts: [
+              ...state.attempts,
+              {
+                id: uuidv4(),
+                date: new Date(),
+                questionary: {
+                  ...state.questionary,
+                  question_pointer: state.questionary.question_pointer + 1,
+                  answers: [
+                    ...state.questionary.answers,
+                    { question_id: action.question_id, answer: action.answer }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+
         return {
           ...state,
           questionary: {
