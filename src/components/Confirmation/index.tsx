@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper, { PaperProps } from '@material-ui/core/Paper';
+import { useHistory } from 'react-router-dom'
 
+import { useQuestions, QuestionsReducerType } from '../../hooks/questions'
 
 type Props = {
   setShowConfirmation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,9 +16,17 @@ type Props = {
 }
 
 const Confirmation: React.FC<Props> = (props) => {
+  const { dispatch } = useQuestions()
+  const history = useHistory()
+
   const handleClose = () => {
     props.setShowConfirmation(false);
   };
+
+  const handleStart = () => {
+    dispatch({ type: QuestionsReducerType.START_QUESTIONARY, quantity: props.questionsQuantity })
+    history.push('/questionary')
+  }
 
   return (
     <div>
@@ -38,7 +47,7 @@ const Confirmation: React.FC<Props> = (props) => {
           <Button autoFocus onClick={handleClose} color='secondary'>
             Cancel
           </Button>
-          <Button onClick={handleClose} color='primary'>
+          <Button onClick={handleStart} color='primary'>
             Start
           </Button>
         </DialogActions>

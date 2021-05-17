@@ -1,8 +1,12 @@
 import Routes from './routes'
 
+import AppContext from './hooks'
+
 function App() {
   return (
-    <Routes />
+    <AppContext>
+      <Routes />
+    </AppContext>
   );
 }
 
