@@ -20,6 +20,7 @@ import { useHistory } from 'react-router-dom'
 import Header from '../../components/Header'
 import { useQuestions, QuestionsReducerType } from '../../hooks/questions'
 import api from '../../api'
+import { decodeHtml } from '../../utils'
 
 const questionaryStyles = makeStyles(theme => ({
   root: {
@@ -55,15 +56,27 @@ const Questionary: React.FC = () => {
   useEffect(() => {
     if (!questionary.quantity) {
       history.push('/')
+    } else {
+      fetchQuestions()
     }
 
     async function fetchQuestions() {
       const response = await api.get(`?amount=${questionary.quantity}`)
       dispatch({ type: QuestionsReducerType.LOAD_QUESTIONARY, questions: response.data.results })
     }
-
-    fetchQuestions()
   }, [])
+
+  function handleNextQuestion() {
+    if (!answer) {
+      return
+    }
+
+    dispatch({
+      type: QuestionsReducerType.NEXT_QUESTION,
+      question_id: questionary.questions[questionary.question_pointer].id,
+      answer: answer
+    })
+  }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAnswer(event.target.value)
@@ -83,29 +96,38 @@ const Questionary: React.FC = () => {
           <Typography variant='h2'>
             Questionary
           </Typography>
-          <Chip label='Question 1 of 30' variant='outlined' size='small' disabled />
+          <Chip
+            label={`Question ${questionary.question_pointer} of ${questionary.quantity}`}
+            variant='outlined'
+            size='small'
+            disabled
+          />
         </Box>
-        <Paper elevation={0} variant='outlined' className={classes.question}>
-          <Typography variant='body1' component='p'>{questionary.questions[0].question}</Typography>
-          <FormControl component='fieldset' className={classes.form}>
-            <RadioGroup aria-label='Answer' value={answer} onChange={handleChange}>
-              <FormControlLabel value='Answer A' control={<Radio />} label={questionary.questions[0].correct_answer} />
-              <FormControlLabel value='Answer B' control={<Radio />} label={questionary.questions[0].incorrect_answers[0]} />
-              <FormControlLabel value='Answer C' control={<Radio />} label={questionary.questions[0].incorrect_answers[1]} />
-              <FormControlLabel value='Answer D' control={<Radio />} label={questionary.questions[0].incorrect_answers[2]} />
-            </RadioGroup>
-            <Button
-              variant='contained'
-              color='primary'
-              endIcon={<NavigateNextOutlined />}
-              className={classes.nextButton}
-              disableElevation
-              size='large'
-            >
-              Next question
-          </Button>
-          </FormControl>
-        </Paper>
+        {questionary.questions[questionary.question_pointer] && (
+          <Paper elevation={0} variant='outlined' className={classes.question}>
+            <Typography variant='body1' component='p'>
+              {decodeHtml(questionary.questions[questionary.question_pointer].question)}
+            </Typography>
+            <FormControl component='fieldset' className={classes.form}>
+              <RadioGroup aria-label='Answer' value={answer} onChange={handleChange}>
+                {questionary.questions[questionary.question_pointer].incorrect_answers.map((answer) => (
+                  <FormControlLabel key={answer} value={answer} control={<Radio />} label={answer} />
+                ))}
+              </RadioGroup>
+              <Button
+                variant='contained'
+                color='primary'
+                endIcon={<NavigateNextOutlined />}
+                className={classes.nextButton}
+                disableElevation
+                size='large'
+                onClick={handleNextQuestion}
+              >
+                Next question
+              </Button>
+            </FormControl>
+          </Paper>
+        )}
       </Container>
     </>
   );

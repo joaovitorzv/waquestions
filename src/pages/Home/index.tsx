@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Typography,
   Container,
@@ -14,6 +14,8 @@ import * as yup from 'yup'
 import ResultTable from '../../components/ResultTable'
 import Header from '../../components/Header'
 import Confirmation from '../../components/Confirmation'
+
+import api from '../../api'
 
 const homeStyles = makeStyles(theme => ({
   root: {
@@ -57,6 +59,15 @@ const validationSchema = yup.object().shape({
 })
 
 const Home: React.FC = () => {
+  useEffect(() => {
+    async function getLoiros() {
+      const response = await api.get('?amount=4')
+      console.log(response.data)
+    }
+
+    getLoiros()
+  }, [])
+
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const formik = useFormik({

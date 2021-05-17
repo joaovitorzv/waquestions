@@ -1,7 +1,8 @@
 import { constants } from "buffer";
 import { createContext, useContext, useReducer } from "react";
 import { v4 as uuidv4 } from 'uuid'
-import api from '../api'
+
+import { shuffle } from '../utils'
 
 interface Question {
   id: string;
@@ -14,8 +15,8 @@ interface Question {
 interface Questionary {
   quantity: number | null;
   questions: Question[];
-  correct_answers: { question_id: string, answer: string }[];
-  incorrect_answers: { question_id: string, answer: string }[];
+  question_pointer: number;
+  answers: { question_id: string, answer: string }[];
 }
 
 interface Attempt {
@@ -52,8 +53,8 @@ const initialState: QuestionsState = {
   questionary: {
     quantity: null,
     questions: [],
-    correct_answers: [],
-    incorrect_answers: []
+    question_pointer: 0,
+    answers: []
   },
   attempts: null
 }
@@ -74,6 +75,7 @@ export const QuestionsProvider: React.FC = ({ children }) => {
 
       case QuestionsReducerType.LOAD_QUESTIONARY:
         console.log(action.questions)
+
         return {
           ...state,
           questionary: {
@@ -84,9 +86,25 @@ export const QuestionsProvider: React.FC = ({ children }) => {
                 category: question.category,
                 question: question.question,
                 correct_answer: question.correct_answer,
-                incorrect_answers: question.incorrect_answers
+                incorrect_answers: shuffle(
+                  question.incorrect_answers,
+                  question.correct_answer
+                )
               }
             })
+          }
+        }
+
+      case QuestionsReducerType.NEXT_QUESTION:
+        return {
+          ...state,
+          questionary: {
+            ...state.questionary,
+            question_pointer: state.questionary.question_pointer + 1,
+            answers: [
+              ...state.questionary.answers,
+              { question_id: action.question_id, answer: action.answer }
+            ]
           }
         }
       default:
