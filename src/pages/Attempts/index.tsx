@@ -7,9 +7,10 @@ import {
   Divider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
+import { useQuestions } from '../../hooks/questions'
 
 import Header from '../../components/Header'
-import Attempt from '../../components/Attempt'
+import AttemptType from '../../components/Attempt'
 
 const attemptsStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +23,8 @@ const attemptsStyles = makeStyles(theme => ({
 }))
 
 const Attempts: React.FC = () => {
+  const { attempts } = useQuestions()
+
   const classes = attemptsStyles()
   return (
     <>
@@ -31,11 +34,9 @@ const Attempts: React.FC = () => {
           <Typography variant='h2'>
             Last Attempts
           </Typography>
-          <Attempt />
-          <Attempt />
-          <Attempt />
-          <Attempt />
-          <Attempt />
+          {attempts.map((attempt, idx) => (
+            <AttemptType key={attempt.id} idx={idx} attempt={attempt} />
+          ))}
         </Box>
       </Container>
     </>
