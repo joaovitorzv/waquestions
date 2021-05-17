@@ -30,18 +30,6 @@ const attemptStyles = makeStyles(theme => ({
   }
 }))
 
-function renderQuestionResult(idx: number, question: string, correct: string, incorrect: string) {
-  const classes = attemptStyles()
-
-  return (
-    <Box className={classes.questionResult}>
-      <Typography variant='body1'>{idx} - {question}</Typography>
-      <Chip icon={<Check />} label={correct} color='primary' />
-      <Chip icon={<Clear />} label={incorrect} color='secondary' />
-    </Box>
-  )
-}
-
 type Props = {
   attempt: AttemptType,
   idx: number
@@ -84,9 +72,9 @@ const Attempt: React.FC<Props> = (props) => {
       <Divider />
       {props.attempt.questionary.questions.map((questionObj, idx) => (
         <Box className={classes.questionResult}>
-          <Typography variant='body1'>{idx} - {questionObj.question}</Typography>
+          <Typography variant='body1'>{idx + 1} - {questionObj.question}</Typography>
           <Chip icon={<Check />} label={questionObj.correct_answer} color='primary' />
-          {props.attempt.questionary.answers[idx] && (
+          {!props.attempt.questionary.answers[idx].answer.includes(questionObj.correct_answer) && (
             <Chip icon={<Clear />} label={props.attempt.questionary.answers[idx].answer} color='secondary' />
           )}
         </Box>
