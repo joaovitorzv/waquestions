@@ -11,13 +11,18 @@ const attemptsStorage = {
       return []
     }
   },
-  persistAttempts: ({ date, id, questionary }: Attempt, lastAttempts: Attempt[]) => {
+  persistAttempts: (attempt: Attempt, lastAttempts: Attempt[]) => {
     const updatedAttempts = [
       ...lastAttempts,
-      { date, id, questionary }
+      {
+        id: attempt.id,
+        date: attempt.date,
+        questionary: attempt.questionary,
+        questions_total: attempt.questions_total,
+        questions_correct: attempt.questions_correct,
+        questions_incorrect: attempt.questions_incorrect
+      }
     ]
-    console.log(updatedAttempts)
-
     localStorage.setItem(key, JSON.stringify(updatedAttempts))
   }
 }

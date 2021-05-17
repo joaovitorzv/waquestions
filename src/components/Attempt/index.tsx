@@ -10,6 +10,7 @@ import Check from '@material-ui/icons/Check'
 import Clear from '@material-ui/icons/Clear'
 
 import { Attempt as AttemptType } from '../../hooks/questions'
+import { decodeHtml } from '../../utils';
 
 const attemptStyles = makeStyles(theme => ({
   root: {
@@ -53,32 +54,34 @@ const Attempt: React.FC<Props> = (props) => {
   })
 
   return (
-    <Paper id={props.attempt.id} elevation={0} variant='outlined' className={classes.root}>
-      <Typography variant='h4'>
-        {`${dateDay}/${dateMonth}/${dateYear}`}
-      </Typography>
-      <Box display='flex' justifyContent='space-between' className={classes.questionsStatus}>
-        <Chip
-          size='small'
-          label={props.attempt.questionary.quantity === 1
-            ? `${props.attempt.questionary.quantity} question`
-            : `${props.attempt.questionary.quantity} questions`}
-          variant='outlined'
-        />
-        <Chip size='small' label={`${correctQuestions.length} correct`} color='primary' variant='outlined' icon={<Check />} />
-        <Chip size='small' label={`${incorrectQuestions.length} incorrect`} color='secondary' variant='outlined' icon={<Clear />} />
-      </Box>
-      <Divider />
-      {props.attempt.questionary.questions.map((questionObj, idx) => (
-        <Box className={classes.questionResult}>
-          <Typography variant='body1'>{idx + 1} - {questionObj.question}</Typography>
-          <Chip icon={<Check />} label={questionObj.correct_answer} color='primary' />
-          {!props.attempt.questionary.answers[idx].answer.includes(questionObj.correct_answer) && (
-            <Chip icon={<Clear />} label={props.attempt.questionary.answers[idx].answer} color='secondary' />
-          )}
+    <div id={props.attempt.id}>
+      <Paper elevation={0} variant='outlined' className={classes.root}>
+        <Typography variant='h4'>
+          {`${dateDay}/${dateMonth}/${dateYear}`}
+        </Typography>
+        <Box display='flex' justifyContent='space-between' className={classes.questionsStatus}>
+          <Chip
+            size='small'
+            label={props.attempt.questionary.quantity === 1
+              ? `${props.attempt.questionary.quantity} question`
+              : `${props.attempt.questionary.quantity} questions`}
+            variant='outlined'
+          />
+          <Chip size='small' label={`${correctQuestions.length} correct`} color='primary' variant='outlined' icon={<Check />} />
+          <Chip size='small' label={`${incorrectQuestions.length} incorrect`} color='secondary' variant='outlined' icon={<Clear />} />
         </Box>
-      ))}
-    </Paper>
+        <Divider />
+        {props.attempt.questionary.questions.map((questionObj, idx) => (
+          <Box className={classes.questionResult}>
+            <Typography variant='body1'>{idx + 1} - {decodeHtml(questionObj.question)}</Typography>
+            <Chip icon={<Check />} label={decodeHtml(questionObj.correct_answer)} color='primary' />
+            {!props.attempt.questionary.answers[idx].answer.includes(questionObj.correct_answer) && (
+              <Chip icon={<Clear />} label={decodeHtml(props.attempt.questionary.answers[idx].answer)} color='secondary' />
+            )}
+          </Box>
+        ))}
+      </Paper>
+    </div>
   );
 }
 

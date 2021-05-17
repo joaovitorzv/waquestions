@@ -29,7 +29,7 @@ const ResultTable: React.FC = () => {
     return createData({
       id: attempt.id,
       totalQuestions: attempt.questionary.quantity!,
-      totalCorrect: 0,
+      totalCorrect: attempt.questions_correct,
       link: attempt.id
     })
   })
@@ -50,7 +50,7 @@ const ResultTable: React.FC = () => {
               <TableCell>{row.totalQuestions}</TableCell>
               <TableCell>{row.totalCorrect}</TableCell>
               <TableCell>
-                <Link component={RouterLink} to={row.link}>See details</Link>
+                <Link href={`/attempts#${row.link}`}>See details</Link>
               </TableCell>
             </TableRow>
           ))}

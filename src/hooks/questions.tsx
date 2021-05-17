@@ -23,6 +23,9 @@ interface Questionary {
 export interface Attempt {
   id: string;
   date: Date;
+  questions_total: number;
+  questions_correct: number;
+  questions_incorrect: number;
   questionary: Questionary;
 }
 
@@ -96,9 +99,12 @@ export const QuestionsProvider: React.FC = ({ children }) => {
 
       case QuestionsReducerType.NEXT_QUESTION:
         if (state.questionary.question_pointer === state.questionary.quantity! - 1) {
-          const attempt = {
+          let attempt = {
             id: uuidv4(),
             date: new Date(),
+            questions_total: 0,
+            questions_correct: 0,
+            questions_incorrect: 0,
             questionary: {
               ...state.questionary,
               question_pointer: state.questionary.question_pointer + 1,
@@ -107,6 +113,19 @@ export const QuestionsProvider: React.FC = ({ children }) => {
                 { question_id: action.question_id, answer: action.answer }
               ]
             }
+          }
+
+          const questions_correct_total = attempt.questionary.answers.filter((answerObj, idx) => {
+            return answerObj.answer.toLowerCase()
+              .includes(attempt.questionary.questions[idx].correct_answer.toLowerCase())
+          }).length
+          const questions_incorrect_total = attempt.questionary.answers.length - questions_correct_total
+
+          attempt = {
+            ...attempt,
+            questions_total: state.questionary.quantity!,
+            questions_correct: questions_correct_total,
+            questions_incorrect: questions_incorrect_total
           }
 
           attemptsStorage.persistAttempts(attempt, state.attempts)

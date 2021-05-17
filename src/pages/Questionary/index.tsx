@@ -116,7 +116,12 @@ const Questionary: React.FC = () => {
             <FormControl component='fieldset' className={classes.form}>
               <RadioGroup aria-label='Answer' value={answer} onChange={handleChange}>
                 {questionary.questions[questionary.question_pointer].incorrect_answers.map((answer) => (
-                  <FormControlLabel key={answer} value={answer} control={<Radio />} label={answer} />
+                  <FormControlLabel
+                    key={answer}
+                    value={decodeHtml(answer)}
+                    label={decodeHtml(answer)}
+                    control={<Radio />}
+                  />
                 ))}
               </RadioGroup>
               <Button

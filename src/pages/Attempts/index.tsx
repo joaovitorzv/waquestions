@@ -2,13 +2,11 @@ import {
   Container,
   Box,
   Typography,
-  Paper,
-  Chip,
-  Divider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import { useQuestions } from '../../hooks/questions'
+import HighlightOff from '@material-ui/icons/HighlightOff'
 
+import { useQuestions } from '../../hooks/questions'
 import Header from '../../components/Header'
 import AttemptType from '../../components/Attempt'
 
@@ -19,6 +17,14 @@ const attemptsStyles = makeStyles(theme => ({
   header: {
     marginBottom: theme.spacing(4),
     color: theme.palette.primary.light
+  },
+  empty: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    color: theme.palette.text.primary,
+    marginTop: theme.spacing(4)
   }
 }))
 
@@ -34,6 +40,12 @@ const Attempts: React.FC = () => {
           <Typography variant='h2'>
             Last Attempts
           </Typography>
+          {attempts.length === 0 && (
+            <Box className={classes.empty}>
+              <HighlightOff />
+              <Typography variant='body1'>It's empty here</Typography>
+            </Box>
+          )}
           {attempts.map((attempt, idx) => (
             <AttemptType key={attempt.id} idx={idx} attempt={attempt} />
           ))}
