@@ -48,13 +48,12 @@ const Attempt: React.FC<Props> = (props) => {
   })
 
   const incorrectQuestions = props.attempt.questionary.answers.filter((answerObj, idx) => {
-    return !answerObj.answer.toLowerCase().includes(props.attempt.questionary.questions[idx].correct_answer.toLowerCase())
+    return !answerObj.answer.toLowerCase()
+      .includes(props.attempt.questionary.questions[idx].correct_answer.toLowerCase())
   })
 
-  console.log({ correctQuestions, incorrectQuestions })
-
   return (
-    <Paper elevation={0} variant='outlined' className={classes.root}>
+    <Paper id={props.attempt.id} elevation={0} variant='outlined' className={classes.root}>
       <Typography variant='h4'>
         {`${dateDay}/${dateMonth}/${dateYear}`}
       </Typography>

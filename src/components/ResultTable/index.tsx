@@ -9,19 +9,30 @@ import {
   Link
 } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
+import { useQuestions } from '../../hooks/questions'
 
-function createData(id: number, totalQuestions: number, totalCorrect: number, link: string) {
+type Row = {
+  id: string,
+  totalQuestions: number,
+  totalCorrect: number,
+  link: string
+}
+
+function createData({ id, totalQuestions, totalCorrect, link }: Row) {
   return { id, totalQuestions, totalCorrect, link }
 }
 
-const rows = [
-  createData(1, 15, 14, '/'),
-  createData(2, 15, 9, '/'),
-  createData(3, 10, 8, '/'),
-  createData(4, 10, 4, '/')
-]
-
 const ResultTable: React.FC = () => {
+  const { attempts } = useQuestions()
+
+  const rows: Row[] = attempts.map(attempt => {
+    return createData({
+      id: attempt.id,
+      totalQuestions: attempt.questionary.quantity!,
+      totalCorrect: 0,
+      link: attempt.id
+    })
+  })
 
   return (
     <TableContainer component={Paper} elevation={0} variant='outlined'>
