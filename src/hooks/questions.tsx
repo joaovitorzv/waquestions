@@ -3,6 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 import { v4 as uuidv4 } from 'uuid'
 
 import { shuffle } from '../utils'
+import attemptsStorage from '../services/attemptsStorage'
 
 interface Question {
   id: string;
@@ -19,7 +20,7 @@ interface Questionary {
   answers: { question_id: string, answer: string }[];
 }
 
-interface Attempt {
+export interface Attempt {
   id: string;
   date: Date;
   questionary: Questionary;
@@ -56,7 +57,7 @@ const initialState: QuestionsState = {
     question_pointer: 0,
     answers: []
   },
-  attempts: []
+  attempts: attemptsStorage.getAttempts()
 }
 
 export const QuestionsProvider: React.FC = ({ children }) => {
@@ -74,8 +75,6 @@ export const QuestionsProvider: React.FC = ({ children }) => {
         }
 
       case QuestionsReducerType.LOAD_QUESTIONARY:
-        console.log(action.questions)
-
         return {
           ...state,
           questionary: {
@@ -97,22 +96,25 @@ export const QuestionsProvider: React.FC = ({ children }) => {
 
       case QuestionsReducerType.NEXT_QUESTION:
         if (state.questionary.question_pointer === state.questionary.quantity! - 1) {
+          const attempt = {
+            id: uuidv4(),
+            date: new Date(),
+            questionary: {
+              ...state.questionary,
+              question_pointer: state.questionary.question_pointer + 1,
+              answers: [
+                ...state.questionary.answers,
+                { question_id: action.question_id, answer: action.answer }
+              ]
+            }
+          }
+
+          attemptsStorage.persistAttempts(attempt, state.attempts)
           return {
             questionary: initialState.questionary,
             attempts: [
               ...state.attempts,
-              {
-                id: uuidv4(),
-                date: new Date(),
-                questionary: {
-                  ...state.questionary,
-                  question_pointer: state.questionary.question_pointer + 1,
-                  answers: [
-                    ...state.questionary.answers,
-                    { question_id: action.question_id, answer: action.answer }
-                  ]
-                }
-              }
+              attempt
             ]
           }
         }

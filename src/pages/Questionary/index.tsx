@@ -77,6 +77,10 @@ const Questionary: React.FC = () => {
       answer: answer
     })
     setAnswer(null)
+
+    if (questionary.question_pointer === questionary.quantity! - 1) {
+      history.push('/attempts')
+    }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
