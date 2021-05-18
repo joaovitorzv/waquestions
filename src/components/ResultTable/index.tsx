@@ -45,7 +45,7 @@ const ResultTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.reverse().map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.totalQuestions}</TableCell>
               <TableCell>{row.totalCorrect}</TableCell>

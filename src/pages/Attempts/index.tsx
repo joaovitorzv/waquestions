@@ -35,7 +35,7 @@ const Attempts: React.FC = () => {
   return (
     <>
       <Header />
-      <Container className={classes.root}>
+      <Container className={classes.root} maxWidth='sm'>
         <Box className={classes.header} component='header'>
           <Typography variant='h2'>
             Last Attempts
@@ -46,7 +46,7 @@ const Attempts: React.FC = () => {
               <Typography variant='body1'>It's empty here</Typography>
             </Box>
           )}
-          {attempts.map((attempt, idx) => (
+          {attempts.reverse().map((attempt, idx) => (
             <AttemptType key={attempt.id} idx={idx} attempt={attempt} />
           ))}
         </Box>

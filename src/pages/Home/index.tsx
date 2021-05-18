@@ -15,8 +15,6 @@ import ResultTable from '../../components/ResultTable'
 import Header from '../../components/Header'
 import Confirmation from '../../components/Confirmation'
 
-import api from '../../api'
-
 const homeStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(2),
@@ -53,21 +51,12 @@ const homeStyles = makeStyles(theme => ({
 const validationSchema = yup.object().shape({
   quantity: yup
     .number()
-    .min(1, 'Th minimum is one question')
+    .min(1, 'The minimum is one question')
     .max(100, 'The maximum is a hundred')
     .required('Quantity of questions required')
 })
 
 const Home: React.FC = () => {
-  useEffect(() => {
-    async function getLoiros() {
-      const response = await api.get('?amount=4')
-      console.log(response.data)
-    }
-
-    getLoiros()
-  }, [])
-
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const formik = useFormik({
@@ -82,7 +71,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Header />
-      <Container maxWidth='md' className={classes.root}>
+      <Container maxWidth='sm' className={classes.root}>
         <Paper variant='outlined' className={classes.questionsQuantityContainer}>
           <Typography variant='body1' component='h2'>How many questions are you up to?</Typography>
           <form onSubmit={formik.handleSubmit}>

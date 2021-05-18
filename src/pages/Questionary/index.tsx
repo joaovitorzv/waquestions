@@ -36,6 +36,12 @@ const questionaryStyles = makeStyles(theme => ({
       fontWeight: theme.typography.fontWeightBold
     }
   },
+  details: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: theme.spacing(2)
+  },
   form: {
     marginTop: theme.spacing(2)
   },
@@ -50,6 +56,8 @@ const questionaryStyles = makeStyles(theme => ({
 const Questionary: React.FC = () => {
   const [answer, setAnswer] = useState<string | null>(null)
   const { questionary, dispatch } = useQuestions()
+
+  const currentQuestion = questionary.questions[questionary.question_pointer]
 
   const history = useHistory()
 
@@ -73,7 +81,7 @@ const Questionary: React.FC = () => {
 
     dispatch({
       type: QuestionsReducerType.NEXT_QUESTION,
-      question_id: questionary.questions[questionary.question_pointer].id,
+      question_id: currentQuestion.id,
       answer: answer
     })
     setAnswer(null)
@@ -108,14 +116,18 @@ const Questionary: React.FC = () => {
             disabled
           />
         </Box>
-        {questionary.questions[questionary.question_pointer] && (
+        {currentQuestion && (
           <Paper elevation={0} variant='outlined' className={classes.question}>
+            <Box className={classes.details}>
+              <Typography variant='subtitle1'>{currentQuestion.category}</Typography>
+              <Chip size='small' label={currentQuestion.difficulty} />
+            </Box>
             <Typography variant='body1' component='p'>
-              {decodeHtml(questionary.questions[questionary.question_pointer].question)}
+              {decodeHtml(currentQuestion.question)}
             </Typography>
             <FormControl component='fieldset' className={classes.form}>
               <RadioGroup aria-label='Answer' value={answer} onChange={handleChange}>
-                {questionary.questions[questionary.question_pointer].incorrect_answers.map((answer) => (
+                {currentQuestion.incorrect_answers.map((answer) => (
                   <FormControlLabel
                     key={answer}
                     value={decodeHtml(answer)}

@@ -1,4 +1,3 @@
-import { constants } from "buffer";
 import { createContext, useContext, useReducer } from "react";
 import { v4 as uuidv4 } from 'uuid'
 
@@ -8,6 +7,8 @@ import attemptsStorage from '../services/attemptsStorage'
 interface Question {
   id: string;
   category: string;
+  type: string;
+  difficulty: string;
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
@@ -86,6 +87,8 @@ export const QuestionsProvider: React.FC = ({ children }) => {
               return {
                 id: uuidv4(),
                 category: question.category,
+                type: question.type,
+                difficulty: question.difficulty,
                 question: question.question,
                 correct_answer: question.correct_answer,
                 incorrect_answers: shuffle(
