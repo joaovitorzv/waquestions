@@ -135,8 +135,8 @@ export const QuestionsProvider: React.FC = ({ children }) => {
           return {
             questionary: initialState.questionary,
             attempts: [
-              ...state.attempts,
-              attempt
+              attempt,
+              ...state.attempts
             ]
           }
         }

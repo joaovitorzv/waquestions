@@ -8,7 +8,7 @@ import HighlightOff from '@material-ui/icons/HighlightOff'
 
 import { useQuestions } from '../../hooks/questions'
 import Header from '../../components/Header'
-import AttemptType from '../../components/Attempt'
+import Attempt from '../../components/Attempt'
 
 const attemptsStyles = makeStyles(theme => ({
   root: {
@@ -46,8 +46,8 @@ const Attempts: React.FC = () => {
               <Typography variant='body1'>It's empty here</Typography>
             </Box>
           )}
-          {attempts.reverse().map((attempt, idx) => (
-            <AttemptType key={attempt.id} idx={idx} attempt={attempt} />
+          {attempts.map((attempt, idx) => (
+            <Attempt key={attempt.id} idx={idx} attempt={attempt} />
           ))}
         </Box>
       </Container>

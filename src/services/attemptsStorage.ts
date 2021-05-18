@@ -13,7 +13,6 @@ const attemptsStorage = {
   },
   persistAttempts: (attempt: Attempt, lastAttempts: Attempt[]) => {
     const updatedAttempts = [
-      ...lastAttempts,
       {
         id: attempt.id,
         date: attempt.date,
@@ -21,7 +20,8 @@ const attemptsStorage = {
         questions_total: attempt.questions_total,
         questions_correct: attempt.questions_correct,
         questions_incorrect: attempt.questions_incorrect
-      }
+      },
+      ...lastAttempts
     ]
     localStorage.setItem(key, JSON.stringify(updatedAttempts))
   }

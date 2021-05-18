@@ -8,7 +8,6 @@ import {
   Paper,
   Link
 } from '@material-ui/core'
-import { Link as RouterLink } from 'react-router-dom'
 import { useQuestions } from '../../hooks/questions'
 
 type Row = {

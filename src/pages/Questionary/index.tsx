@@ -72,7 +72,7 @@ const Questionary: React.FC = () => {
       const response = await api.get(`?amount=${questionary.quantity}`)
       dispatch({ type: QuestionsReducerType.LOAD_QUESTIONARY, questions: response.data.results })
     }
-  }, [])
+  }, [dispatch, history, questionary.quantity])
 
   function handleNextQuestion() {
     if (!answer) {

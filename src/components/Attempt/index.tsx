@@ -75,7 +75,7 @@ const Attempt: React.FC<Props> = (props) => {
         </Box>
         <Divider />
         {props.attempt.questionary.questions.map((questionObj, idx) => (
-          <Box className={classes.questionResult}>
+          <Box key={questionObj.id} className={classes.questionResult}>
             <Box className={classes.details}>
               <Typography variant='subtitle2'>{questionObj.category}</Typography>
               <Chip size='small' label={questionObj.difficulty} />
