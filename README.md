@@ -2,7 +2,7 @@
 # WaQuestions
 
 
-Waproject Front End technical test [see live](https://waquestions.netlify.app/).
+Waproject Front End technical test (done in 3 days) [see live](https://waquestions.netlify.app/).
 
 
 ## Run locally
